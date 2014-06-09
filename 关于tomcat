@@ -1,0 +1,14 @@
+1.eclipse里配置tomcat启动成功，访问localhost:8080返回404，但是单独启动tomcat就可以访问，
+这是eclipse里面默认的tomcat设置有问题，需要点开属性，选择server locations为Use Tomcat installation,然后确认Server Path项是自己的tomcat路径
+2.JVM初始给tomcat分配的内存控制：在catalina.bat中设置 set JAVA_OPTS=%JAVA_OPTS% -server -Xms512m -Xmx512m -XX:PermSize=64M -XX:MaxPermSize=256m
+安装版跟解压版都有，会导致该设置没有用，可能是因为有注册信息，此时，解压版用catalina.bat启动有用但是用startup.bat启动就无效
+3.tomcat通过自己的startup.bat启动内存够用了，但是在eclipse中启动的时候内存又变小了
+windows-->preference-->Java-->Installed JREs-->jre7...-->Edit-->Default VM argument中添加-Xmx1024M -XX:MaxPermSize=256m
+或者路径在Server-->Runtime Environments-->Apache Tomcat-->Edit-->Installed JREs-->......
+4.tomcat登录到localhost:8080点击Server Status，需要输入用户名密码，用户配置在conf/tomcat-user.xml,设置如下：
+<tomcat-users>
+<rolerolename="manager"/>
+<userusername="tomcat"password="s3cret"roles="manager"/>
+</tomcat-users>
+进入localhost:8080/manager/status。但是用eclipse启动会把这个文件改成原来的
+解决方法：找到eclipse左边工程列表中找到Server工程，里面找到对应的tomcat，修改这里的文件。
